@@ -1,0 +1,36 @@
+{% extends "core/base.html" %}
+{% block title %}
+  Generate QR
+{% endblock title %}
+
+{% block content %}
+<div class="bg-white py-6 sm:py-8 lg:py-12">
+    <div class="mx-auto max-w-screen-2xl px-4 md:px-8">
+        <h2 class="mb-4 text-center text-2xl font-bold text-gray-800 md:mb-8 lg:text-3xl">Generate QR Code</h2>
+
+        <!-- Form to take user input -->
+        <form method="POST" action="{% url 'generate_qr' %}" class="mx-auto max-w-lg rounded-lg border p-4">
+            {% csrf_token %}
+            <div class="flex flex-col gap-4">
+                <!-- Input for Mobile Number -->
+                <input name="mobile_number" type="text" class="w-full rounded border bg-gray-50 px-3 py-2 text-gray-800 outline-none ring-indigo-300 transition duration-100 focus:ring" placeholder="Enter 10-digit mobile number" required pattern="\d{10}" />
+
+                <!-- Input for Additional QR Data -->
+                <input name="qr_data" type="text" class="w-full rounded border bg-gray-50 px-3 py-2 text-gray-800 outline-none ring-indigo-300 transition duration-100 focus:ring" placeholder="Enter text to generate QR code" />
+
+                <!-- Submit Button -->
+                <button type="submit" class="block rounded-lg bg-gray-800 px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-gray-300 transition duration-100 hover:bg-gray-700 focus-visible:ring active:bg-gray-600 md:text-base">Generate</button>
+            </div>
+        </form>
+
+        <!-- Display the generated QR Code -->
+        {% if qr_image_url %}
+        <div class="mt-8 mx-auto max-w-lg rounded-lg border p-4 text-center">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Your QR Code</h2>
+            <img src="{{ qr_image_url }}" alt="QR Code" class="mx-auto">
+            <a href="{{ qr_image_url }}" download class="block mt-4 rounded-lg bg-green-600 px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-gray-300 transition duration-100 hover:bg-gray-700 focus-visible:ring active:bg-gray-600 md:text-base">Save QR</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}
